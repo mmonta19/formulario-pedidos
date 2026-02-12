@@ -66,7 +66,7 @@ const dispatch = (type, payload = {}) => {
 
 const field = (name, label, value, error = '', type = 'text') => `
   <label>${label}</label>
-  <input type="${type}" name="${name}" value="${value || ''}" />
+  <input type="${type}" name="${name}" value="${value || ''}" data-role="customer-field" />
   ${error ? `<div class="error">${error}</div>` : ''}
 `;
 
@@ -198,10 +198,24 @@ function bind() {
     if (confirm('¿Seguro que querés borrar el pedido guardado y empezar de cero?')) { clearState(); state = { ...initialState }; showResume = false; render(); }
   });
   app.querySelectorAll('[data-action="type"]').forEach((el) => el.onclick = () => dispatch('SET_TYPE', el.dataset.value) || dispatch('SET_STEP', 2));
-  app.querySelectorAll('input[name], input[data-role="cart-qty"]').forEach((el) => el.oninput = () => {
-    if (el.dataset.role === 'cart-qty') dispatch('UPDATE_CART_QTY', { id: el.dataset.id, qty: Number(el.value) || 0 });
-    else dispatch('SET_DATA', { [el.name]: el.value });
-  });
+  // Campos del cliente (NO render por tecla)
+app.querySelectorAll('input[data-role="customer-field"]').forEach((el) => {
+  el.oninput = () => {
+    state.customerData = { ...state.customerData, [el.name]: el.value };
+  };
+  el.onblur = () => {
+    persist();
+  };
+});
+
+// Cantidades en carrito (sí puede renderizar)
+app.querySelectorAll('input[data-role="cart-qty"]').forEach((el) => {
+  el.oninput = () =>
+    dispatch('UPDATE_CART_QTY', {
+      id: el.dataset.id,
+      qty: Number(el.value) || 0
+    });
+});
   app.querySelectorAll('[data-action="back"]').forEach((el) => el.onclick = () => dispatch('SET_STEP', state.step - 1));
   app.querySelectorAll('[data-action="next-customer"]').forEach((el) => el.onclick = () => {
     const errs = validateCustomer();
