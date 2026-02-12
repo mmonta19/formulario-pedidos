@@ -162,7 +162,8 @@ function render() {
     if (node.products) {
       const rootCat = CATALOG.find((c) => c.key === state.navPath[0]);
       const system = state.navPath[1] || node.label;
-      const list = flattenProducts(node, rootCat.label, system, []).filter((p) => `${p.subgrupo} ${p.nombre}`.toLowerCase().includes(state.catalogSearch.toLowerCase()));
+      const trail = state.navPath.slice(2); // guarda Ø3.0 / Ø4.0 / etc
+      const list = flattenProducts(node, rootCat.label, system, trail).filter((p) => `${p.subgrupo} ${p.nombre}`.toLowerCase().includes(state.catalogSearch.toLowerCase()));
       body = `<div class="card"><input placeholder="Buscar en esta lista" value="${state.catalogSearch}" data-role="search" />${list.map((p) => {
         const inCart = state.cartItems.find((x) => x.id === p.id);
         const qty = state.qtyDrafts[p.id] ?? inCart?.cantidad ?? 0;
