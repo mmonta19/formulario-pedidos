@@ -3,9 +3,11 @@ import { clearState, loadState, saveState } from './storage.js';
 import { buildOrderText, buildWhatsAppUrl } from './utils/whatsapp.js';
 
 const SELLERS = [
-  { id: 'v1', label: 'Vendedor 1', phone: '+54911XXXXXXXX' },
-  { id: 'v2', label: 'Vendedor 2', phone: '+54911XXXXXXXX' },
-  { id: 'v3', label: 'Vendedor 3', phone: '+54911XXXXXXXX' }
+  { 
+    id: 'biofix', 
+    label: 'Departamento Ventas BIO-FIX', 
+    phone: '+5491164336112' 
+  }
 ];
 
 const initialState = {
