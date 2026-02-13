@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "node server.mjs",
-    "start": "node server.mjs",
-    "build": "node -e \"console.log('Build estático: sin compilación de Vite')\""
+
   }
 }
