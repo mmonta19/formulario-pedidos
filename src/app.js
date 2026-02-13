@@ -3,9 +3,11 @@ import { loadState, saveState } from './storage.js';
 import { buildOrderText, buildWhatsAppUrl } from './utils/whatsapp.js';
 
 const SELLERS = [
-  { id: 'v1', label: 'Vendedor 1', phone: '+54911XXXXXXXX' },
-  { id: 'v2', label: 'Vendedor 2', phone: '+54911XXXXXXXX' },
-  { id: 'v3', label: 'Vendedor 3', phone: '+54911XXXXXXXX' }
+  { 
+    id: 'biofix', 
+    label: 'Departamento Ventas BIO-FIX', 
+    phone: '+5491164336112' 
+  }
 ];
 
 const SYSTEM_COLORS = {
@@ -435,57 +437,7 @@ app.addEventListener('click', (event) => {
       render();
       return;
     }
-    goToStep(STEP_IDS.categories);
-    return;
-  }
 
-  if (action === 'go-customer') {
-    goToStep(STEP_IDS.customer);
-    return;
-  }
-
-  if (action === 'select-category') {
-    state.selectedCategory = actionEl.dataset.value;
-    state.selectedSystem = '';
-    state.selectedDiameter = '';
-    goToStep(STEP_IDS.products);
-    return;
-  }
-
-  if (action === 'select-system') {
-    state.selectedSystem = actionEl.dataset.value;
-    state.selectedDiameter = '';
-    persist();
-    render();
-    return;
-  }
-
-  if (action === 'select-diameter') {
-    state.selectedDiameter = actionEl.dataset.value;
-    persist();
-    render();
-    return;
-  }
-
-  if (action === 'change-qty' || action === 'commit-product') {
-    const { productsByDiameter } = getImplantProductsForUI();
-    const product = Object.values(productsByDiameter).flat().find((item) => item.id === actionEl.dataset.id);
-    if (!product) return;
-
-    const qtyInput = app.querySelector(`[data-role="product-qty"][data-id="${product.id}"]`);
-    const currentQty = Number(qtyInput?.value || 0);
-
-    if (action === 'change-qty') {
-      const nextQty = Math.max(0, currentQty + Number(actionEl.dataset.delta));
-      if (qtyInput) qtyInput.value = String(nextQty);
-      state.qtyDrafts[product.id] = nextQty;
-      persist();
-      return;
-    }
-
-    commitProductQty(product, currentQty);
-    state.qtyDrafts[product.id] = currentQty;
-    persist();
     toast('Carrito actualizado');
     return;
   }
